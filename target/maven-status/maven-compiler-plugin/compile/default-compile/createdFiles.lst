@@ -1,0 +1,4 @@
+META-INF/panache-archive.marker
+com/thecat/user/endpoint/UserResource.class
+com/thecat/user/model/User.class
+com/thecat/user/model/Status.class

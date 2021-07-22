@@ -1,0 +1,3 @@
+[EXECUTABLE]
+user-service-mongodb-1.0.0-SNAPSHOT-runner
+

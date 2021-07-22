@@ -1,0 +1,3 @@
+META-INF/panache-archive.marker
+com/thecat/user/endpoint/NativeUserResourceIT.class
+com/thecat/user/endpoint/UserResourceTest.class
