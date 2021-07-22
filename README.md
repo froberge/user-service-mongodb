@@ -1,7 +1,5 @@
-# 
-User service coded with Quarkus, using the Panache extension and connecting to a mongoDB database.
 # User Service Mongodb
-User service that interact with the user schema for the coffeeshop. It interact with a MongoDB database.
+User service coded with Quarkus, using the Panache extension and connecting to a mongoDB database.
 
 #### :warning: Warning
 The main branch contains only this README file. This repository is used as a placeholder for live coding sessions with [Quarkus](https://quarkus.io/).
@@ -17,7 +15,7 @@ The main branch contains only this README file. This repository is used as a pla
 
 ###### Build Step
 
-:exclamation:*Don't clone the project, generating the quarkus project will bootstrap your project.*
+:exclamation: *Don't clone the project, generating the quarkus project will bootstrap your project.*
 
 Generate the quarkus project.
 ```
@@ -39,7 +37,7 @@ Add the required extension for Kubernetes config if needed
 ./mvnw quarkus:add-extension -Dextensions=“Kubernetes-config"
 ```
 
-:exclamation:*Steps to create a feature branch on this repository.*
+####Steps to create a feature branch on this repository.
 
 1. Track changes with git 
 ```
