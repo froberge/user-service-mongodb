@@ -34,7 +34,7 @@ Add the required extensions for mongo-db panache
 
 Add the required extension for Kubernetes config if needed
 ```
-./mvnw quarkus:add-extension -Dextensions=“Kubernetes-config"
+./mvnw quarkus:add-extension -Dextensions="Kubernetes-config"
 ```
 
 ###### Steps to create a feature branch on this repository.
