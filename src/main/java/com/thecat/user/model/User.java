@@ -3,8 +3,10 @@ package com.thecat.user.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import io.quarkus.mongodb.panache.MongoEntity;
 import io.quarkus.mongodb.panache.PanacheMongoEntity;
 
+@MongoEntity
 public class User extends PanacheMongoEntity {
     
     public String name;
