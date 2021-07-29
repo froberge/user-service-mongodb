@@ -21,6 +21,9 @@ import com.thecat.user.model.User;
 
 import org.bson.types.ObjectId;
 
+import io.quarkus.mongodb.panache.PanacheQuery;
+import io.quarkus.panache.common.Page;
+
 @Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -36,7 +39,7 @@ public class UserResource {
     @GET
     @Path("/search/status/{status}")
     public List<User> searchByStatus(@PathParam("status") String status) {
-        return User.findByStatus( status.toUpperCase() );
+        return User.findByStatus( status );
     }
 
     @GET
@@ -52,20 +55,58 @@ public class UserResource {
         return User.findAllUser();
     }
 
+    @GET
+    @Path("/count")
+    public long getTotalCount() {
+        return User.totalUsers();
+    }
+
+    @GET
+    @Path("/countactive")
+    public long getTotalActive() {
+        return User.totalUsersActive();
+    }
+
+    @GET
+    @Path("/count/status/{status}")
+    public long getTotalByStatus(@PathParam("status") String status) {
+        return User.totalUsersByStatus(status);
+    }
+
+    @GET
+    @Path("/firstpage")
+    public List<User> getFirstPage() {
+        PanacheQuery<User> allUser = User.findAll();
+        return allUser.page(Page.ofSize(10)).list();
+    }
+
+
+    @GET
+    @Path("/from/{min}/to/{max}")
+    public List<User> getUsersByRange(@PathParam("min") int min, @PathParam("max") int max) {
+        PanacheQuery<User> allUser = User.findAll();
+        return allUser.range(min, max).list();
+        
+    }
+
+
     @PUT
-    @Path( "/addmyself" )
+    @Path( "/addusers" )
     @Produces(MediaType.TEXT_PLAIN)
     public Response addMyself() {
-        User user = new User();
-        user.name = "Felix";
-        user.email = "felix@test.com";
-        user.gender = "M";
-        user.password = "password123";
-        user.birthDate = LocalDate.of(2000, Month.JULY, 20);
-        user.createDate = LocalDate.now();
-        user.status = Status.ACTIVE;
 
-        user.persist();
+        for(int i=0 ;i<=50; i++ ) {
+            User user = new User();
+            user.name = "User_" + i;
+            user.email = user.name + "@test.com";
+            user.gender = "M";
+            user.password = "password123";
+            user.birthDate = LocalDate.of(2000, Month.JULY, 20);
+            user.createDate = LocalDate.now();
+            user.status = Status.getRandomGender();
+
+            user.persist();
+        }
 
         return Response.ok().build();
     }

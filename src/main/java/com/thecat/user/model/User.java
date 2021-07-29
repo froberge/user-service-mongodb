@@ -15,19 +15,27 @@ public class User extends PanacheMongoEntity {
     public LocalDate createDate;
     public Status status;
 
+    public static long totalUsers() {
+        return count();
+    }
+
+    public static long totalUsersActive() {
+        return count( "status", Status.ACTIVE);
+    }
+
+    public static long totalUsersByStatus( String status ) {
+        return count( "status", status.toUpperCase());
+    }
+
     public static User findByName( String name ) {
-        return find( "name", name ).firstResult();
+        return find( "name = ", name ).firstResult();
     }
 
     public static List<User> findByStatus( String status ) {
-        return list( "status", status );
+        return list( "status", status.toUpperCase() );
     }
-
+ 
     public static List<User> findAllUser() {
         return listAll();
-    }
-
-    public static List<User> findActiveUser() {
-        return list( "status", Status.ACTIVE );
     }
 }
