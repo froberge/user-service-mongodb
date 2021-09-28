@@ -26,7 +26,7 @@ import org.bson.types.ObjectId;
 import io.quarkus.mongodb.panache.PanacheQuery;
 import io.quarkus.panache.common.Page;
 
-@Path("/users")
+@Path("/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResource {
@@ -51,7 +51,6 @@ public class UserResource {
     public User searchByName(@PathParam("name") String name) {
         LOG.info( "searchByName" );
         User u = User.findByName(name);
-
         return ( u != null ) ? u : new User();
     }
 
