@@ -12,7 +12,7 @@ public class UserResourceTest {
     @Test
     public void testHelloEndpoint() {
         given()
-          .when().get("/users/health")
+          .when().get("/user/health")
           .then()
              .statusCode(200)
              .body(is("SUCCESS"));
