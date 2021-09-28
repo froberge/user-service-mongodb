@@ -16,6 +16,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.jboss.logging.Logger; 
+
 import com.thecat.user.model.Status;
 import com.thecat.user.model.User;
 
@@ -28,6 +30,8 @@ import io.quarkus.panache.common.Page;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResource {
+
+    private static final Logger LOG = Logger.getLogger(UserResource.class);
 
     @GET
     @Path( "/health" )
@@ -45,6 +49,7 @@ public class UserResource {
     @GET
     @Path("/search/name/{name}")
     public User searchByName(@PathParam("name") String name) {
+        LOG.info( "searchByName" );
         User u = User.findByName(name);
 
         return ( u != null ) ? u : new User();
@@ -52,7 +57,33 @@ public class UserResource {
 
     @GET
     public List<User> list() {
+        LOG.info( "getAllUser" );
         return User.findAllUser();
+    }
+
+    @POST
+    @Consumes( MediaType.APPLICATION_JSON)
+    public int getUser( User user ) {
+        LOG.info( "Get user rest endpoint[" + user.email + "] [" + user.password + "]" );
+
+        // First look at if the username exist.
+        User u = User.findByEmail( user.email );
+
+        if ( u != null ) {
+            LOG.info( "user status " + u.status );
+            // Validate if the user is active
+            if ( u.status.equals(Status.ACTIVE ) ) {
+                if ( !u.password.isEmpty() && u.password.endsWith( user.password ) ) {
+                    return javax.ws.rs.core.Response.Status.OK.getStatusCode();
+                } else {
+                    return javax.ws.rs.core.Response.Status.PARTIAL_CONTENT.getStatusCode();
+                }
+            } else {
+                return javax.ws.rs.core.Response.Status.PARTIAL_CONTENT.getStatusCode();
+            }
+        } else {
+            return javax.ws.rs.core.Response.Status.NO_CONTENT.getStatusCode();
+        }
     }
 
     @GET
@@ -80,7 +111,6 @@ public class UserResource {
         return allUser.page(Page.ofSize(10)).list();
     }
 
-
     @GET
     @Path("/from/{min}/to/{max}")
     public List<User> getUsersByRange(@PathParam("min") int min, @PathParam("max") int max) {
@@ -89,9 +119,8 @@ public class UserResource {
         
     }
 
-
-    @PUT
-    @Path( "/addusers" )
+    @GET
+    @Path( "/initializeDatabase" ) 
     @Produces(MediaType.TEXT_PLAIN)
     public Response addMyself() {
 
@@ -112,6 +141,7 @@ public class UserResource {
     }
 
     @POST
+    @Path( "/adduser" )
     public Response addUser( User user ) {
         user.persist();
         return Response.ok().build();

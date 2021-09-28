@@ -30,13 +30,17 @@ public class User extends PanacheMongoEntity {
     }
 
     public static User findByName( String name ) {
-        return find( "name = ", name ).firstResult();
+        return find( "name", name ).firstResult();
+    }
+
+    public static User findByEmail( String email ) {   
+        return find( "email", email ).firstResult();
     }
 
     public static List<User> findByStatus( String status ) {
         return list( "status", status.toUpperCase() );
     }
- 
+
     public static List<User> findAllUser() {
         return listAll();
     }
